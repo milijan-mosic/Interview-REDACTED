@@ -9,27 +9,20 @@ import (
 	"os"
 )
 
-var dbPath string
+var (
+	dbPath    string
+	authToken string
+)
 
 func main() {
 	http.HandleFunc("/hello", httpapi.HelloWorldHandler)
 
-	port, err := utils.GetEnvVariable("PORT")
-	if err != nil {
-		log.Println(err)
-		port = "8080"
-	}
-
-	dbPath, err = utils.GetEnvVariable("DATABASE_PATH")
-	if err != nil {
-		log.Println(err)
-		dbPath = "./data.db"
-	}
-
-	log.Println(dbPath)
+	port := utils.InitAPI(&dbPath, &authToken)
+	log.Println(dbPath)    // debug
+	log.Println(authToken) // debug
 
 	log.Println("Server running on :" + port)
-	err = http.ListenAndServe(":"+port, nil)
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

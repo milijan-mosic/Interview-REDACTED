@@ -105,7 +105,7 @@ func PatchPartHandler(w http.ResponseWriter, r *http.Request) {
 
 	utils.SetJSONResponse(w, http.StatusOK, "")
 
-	json.NewEncoder(w).Encode(map[string]string{
+	_ = json.NewEncoder(w).Encode(map[string]string{
 		"message":    "status updated",
 		"part_id":    partID,
 		"old_status": oldStatus,

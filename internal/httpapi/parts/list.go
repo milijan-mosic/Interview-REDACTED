@@ -6,11 +6,18 @@ import (
 	"interview/internal/store"
 	"log"
 	"net/http"
+	"strings"
 )
 
 func ListPartsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		utils.SetJSONResponse(w, http.StatusMethodNotAllowed, "Invalid HTTP method")
+		return
+	}
+
+	authHeader := r.Header.Get("Authorization")
+	if !strings.HasPrefix(authHeader, "Bearer ") || strings.TrimPrefix(authHeader, "Bearer ") != store.AuthToken {
+		utils.SetJSONResponse(w, http.StatusUnauthorized, "Unauthorized access")
 		return
 	}
 

@@ -22,6 +22,12 @@ func GetPartHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	authHeader := r.Header.Get("Authorization")
+	if !strings.HasPrefix(authHeader, "Bearer ") || strings.TrimPrefix(authHeader, "Bearer ") != store.AuthToken {
+		utils.SetJSONResponse(w, http.StatusUnauthorized, "Unauthorized access")
+		return
+	}
+
 	part := store.Part{}
 	query := "SELECT * FROM parts WHERE id = ?"
 

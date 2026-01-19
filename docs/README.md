@@ -46,7 +46,7 @@ You may use the provided `schema.sql` and `seed.sql`, or write your own schema, 
 
 #### Health
 
-- `GET /healthz`
+- `GET /health`
   - **No auth**
   - Response: `200` with JSON like `{ "status": "ok" }`
 

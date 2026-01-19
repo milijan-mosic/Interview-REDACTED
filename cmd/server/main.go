@@ -34,7 +34,7 @@ func main() {
 		log.Println(err)
 	}
 
-	http.HandleFunc("/hello", httpapi.HelloWorldHandler)
+	http.HandleFunc("/health", httpapi.HealthHandler)
 
 	log.Println("Server running on :" + port)
 	err = http.ListenAndServe(":"+port, nil)

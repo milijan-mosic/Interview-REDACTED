@@ -1,25 +1,19 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"interview/cmd/utils"
 	"interview/internal/httpapi"
+	"interview/internal/store"
 	"log"
 	"net/http"
 	"os"
 )
 
-var (
-	dbPath    string
-	authToken string
-	db        *sql.DB
-)
-
 func main() {
-	port := utils.InitAPI(&dbPath, &authToken)
+	port := utils.InitAPI(&store.DBPath, &store.AuthToken)
 
-	db, err := utils.InitDatabase(dbPath, "./cmd/sql/schema.sql")
+	db, err := utils.InitDatabase(store.DBPath, "./cmd/sql/schema.sql")
 	if err != nil {
 		log.Fatal(err)
 	}

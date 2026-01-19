@@ -27,11 +27,11 @@ CREATE INDEX IF NOT EXISTS idx_part_status_audit_part_id_changed_at
   ON part_status_audit(part_id, changed_at);
 
 -- Optional: uncomment if implementing idempotency (optional feature)
--- CREATE TABLE IF NOT EXISTS idempotency_keys (
---   key        TEXT PRIMARY KEY,
---   part_id    TEXT NOT NULL,
---   created_at TEXT NOT NULL
--- );
+CREATE TABLE IF NOT EXISTS idempotency_keys (
+  key        TEXT PRIMARY KEY,
+  part_id    TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
 
 CREATE INDEX IF NOT EXISTS idx_parts_status
   ON parts(status);

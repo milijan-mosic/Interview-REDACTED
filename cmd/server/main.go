@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"interview/cmd/utils"
 	"interview/internal/httpapi"
@@ -12,17 +13,22 @@ import (
 var (
 	dbPath    string
 	authToken string
+	db        *sql.DB
 )
 
 func main() {
+	port := utils.InitAPI(&dbPath, &authToken)
+
+	db, err := utils.InitDatabase(dbPath, "./cmd/sql/schema.sql")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	http.HandleFunc("/hello", httpapi.HelloWorldHandler)
 
-	port := utils.InitAPI(&dbPath, &authToken)
-	log.Println(dbPath)    // debug
-	log.Println(authToken) // debug
-
 	log.Println("Server running on :" + port)
-	err := http.ListenAndServe(":"+port, nil)
+	err = http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

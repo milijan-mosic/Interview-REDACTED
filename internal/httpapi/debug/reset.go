@@ -9,7 +9,7 @@ import (
 )
 
 func ResetPartsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
+	if r.Method != http.MethodPost {
 		utils.SetJSONResponse(w, http.StatusMethodNotAllowed, "Invalid HTTP method")
 		return
 	}

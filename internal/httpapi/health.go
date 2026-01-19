@@ -7,7 +7,7 @@ import (
 )
 
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
+	if r.Method != http.MethodGet {
 		utils.SetJSONResponse(w, http.StatusMethodNotAllowed, "Invalid HTTP method")
 		return
 	}

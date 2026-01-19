@@ -11,7 +11,7 @@ import (
 )
 
 func GetPartHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
+	if r.Method != http.MethodGet {
 		utils.SetJSONResponse(w, http.StatusMethodNotAllowed, "Invalid HTTP method")
 		return
 	}
@@ -47,7 +47,5 @@ func GetPartHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.SetJSONResponse(w, http.StatusOK, "")
-	_ = json.NewEncoder(w).Encode(map[string]store.Part{
-		"data": part,
-	})
+	_ = json.NewEncoder(w).Encode(part)
 }

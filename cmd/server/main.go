@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"interview/cmd/utils"
 	"interview/internal/httpapi"
 	"interview/internal/httpapi/debug"
@@ -10,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func main() {
@@ -42,10 +42,16 @@ func main() {
 	http.HandleFunc(store.ApiVersion+"/parts/{id}", parts.GetPartHandler)
 	http.HandleFunc(store.ApiVersion+"/parts/{id}/status", parts.PatchPartHandler)
 
+	srv := &http.Server{
+		Addr:              ":" + port,
+		ReadTimeout:       5 * time.Second,
+		ReadHeaderTimeout: 2 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       30 * time.Second,
+	}
 	log.Println("Server running on :" + port)
-	err = http.ListenAndServe(":"+port, nil)
-	if err != nil {
-		fmt.Println(err)
+	if err := srv.ListenAndServe(); err != nil {
+		log.Fatal(err)
 		os.Exit(1)
 	}
 }

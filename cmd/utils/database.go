@@ -7,6 +7,14 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+func ExecSQL(db *sql.DB, schema []byte) error {
+	if _, err := db.Exec(string(schema)); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func InitDatabase(dbPath string, schemaPath string) (*sql.DB, error) {
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {

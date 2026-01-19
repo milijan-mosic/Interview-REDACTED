@@ -25,6 +25,15 @@ func main() {
 	}
 	defer db.Close()
 
+	seedSchema, err := os.ReadFile("./cmd/sql/seed.sql")
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = utils.ExecSQL(db, seedSchema)
+	if err != nil {
+		log.Println(err)
+	}
+
 	http.HandleFunc("/hello", httpapi.HelloWorldHandler)
 
 	log.Println("Server running on :" + port)

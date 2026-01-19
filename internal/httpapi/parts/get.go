@@ -31,7 +31,7 @@ func GetPartHandler(w http.ResponseWriter, r *http.Request) {
 	part := store.Part{}
 	query := "SELECT * FROM parts WHERE id = ?"
 
-	err := store.DB.QueryRow(query, id).Scan(
+	err := store.DB.QueryRowContext(r.Context(), query, id).Scan(
 		&part.ID,
 		&part.Name,
 		&part.Status,

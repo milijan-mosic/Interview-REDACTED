@@ -21,7 +21,7 @@ func ListPartsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := store.DB.Query("SELECT * FROM parts")
+	rows, err := store.DB.QueryContext(r.Context(), "SELECT * FROM parts")
 	if err != nil {
 		log.Println(err)
 		utils.SetJSONResponse(w, http.StatusInternalServerError, err.Error())

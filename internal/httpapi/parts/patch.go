@@ -63,7 +63,7 @@ func PatchPartHandler(w http.ResponseWriter, r *http.Request) {
 	defer tx.Rollback()
 
 	var oldStatus string
-	err = tx.QueryRow("SELECT status FROM parts WHERE id = ?", partID).Scan(&oldStatus)
+	err = tx.QueryRowContext(r.Context(), "SELECT status FROM parts WHERE id = ?", partID).Scan(&oldStatus)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			utils.SetJSONResponse(w, http.StatusNotFound, err.Error())
@@ -75,14 +75,15 @@ func PatchPartHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = tx.Exec("UPDATE parts SET status = ?, updated_at = ? WHERE id = ?", newStatus, time.Now().UTC().Format(time.RFC3339), partID)
+	_, err = tx.ExecContext(r.Context(), "UPDATE parts SET status = ?, updated_at = ? WHERE id = ?", newStatus, time.Now().UTC().Format(time.RFC3339), partID)
 	if err != nil {
 		log.Println(err)
 		utils.SetJSONResponse(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	_, err = tx.Exec(
+	_, err = tx.ExecContext(
+		r.Context(),
 		`INSERT INTO part_status_audit (part_id, old_status, new_status, changed_at, request_id)
 		 VALUES (?, ?, ?, ?, ?)`,
 		partID,

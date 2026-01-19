@@ -38,10 +38,9 @@ func main() {
 	http.HandleFunc("/debug/reset", debug.ResetPartsHandler)
 	http.HandleFunc("/debug/stats", debug.PartsStatsHandler)
 
-	apiVersion := "/v1"
-	http.HandleFunc(apiVersion+"/parts", parts.ListPartsHandler)
-	http.HandleFunc(apiVersion+"/parts/{id}", parts.GetPartHandler)
-	http.HandleFunc(apiVersion+"/parts/{id}/status", parts.PatchPartHandler)
+	http.HandleFunc(store.ApiVersion+"/parts", parts.ListPartsHandler)
+	http.HandleFunc(store.ApiVersion+"/parts/{id}", parts.GetPartHandler)
+	http.HandleFunc(store.ApiVersion+"/parts/{id}/status", parts.PatchPartHandler)
 
 	log.Println("Server running on :" + port)
 	err = http.ListenAndServe(":"+port, nil)

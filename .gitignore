@@ -34,3 +34,4 @@ go.work.sum
 # Mine
 *.zip
 *.db
+*.env

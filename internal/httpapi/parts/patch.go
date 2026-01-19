@@ -66,7 +66,7 @@ func PatchPartHandler(w http.ResponseWriter, r *http.Request) {
 	err = tx.QueryRow("SELECT status FROM parts WHERE id = ?", partID).Scan(&oldStatus)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			utils.SetJSONResponse(w, http.StatusInternalServerError, err.Error())
+			utils.SetJSONResponse(w, http.StatusNotFound, err.Error())
 		} else {
 			utils.SetJSONResponse(w, http.StatusInternalServerError, err.Error())
 		}

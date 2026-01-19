@@ -7,12 +7,12 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func ExecSQL(db *sql.DB, schema []byte) error {
-	if _, err := db.Exec(string(schema)); err != nil {
-		return err
+func ExecSQL(db *sql.DB, schema []byte) (any, error) {
+	if result, err := db.Exec(string(schema)); err != nil {
+		return result, err
 	}
 
-	return nil
+	return nil, nil
 }
 
 func InitDatabase(dbPath string, schemaPath string) (*sql.DB, error) {

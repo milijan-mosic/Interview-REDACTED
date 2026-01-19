@@ -24,7 +24,7 @@ func ResetPartsHandler(w http.ResponseWriter, r *http.Request) {
 			utils.SetJSONResponse(w, http.StatusInternalServerError, err.Error())
 			return
 		}
-		err = utils.ExecSQL(store.DB, schema)
+		_, err = utils.ExecSQL(store.DB, schema)
 		if err != nil {
 			log.Println(err)
 			utils.SetJSONResponse(w, http.StatusInternalServerError, err.Error())

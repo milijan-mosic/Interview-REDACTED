@@ -14,23 +14,28 @@ import (
 func main() {
 	port := utils.InitAPI(&store.DBPath, &store.AuthToken)
 
-	db, err := utils.InitDatabase(store.DBPath, "./cmd/sql/schema.sql")
+	db, err := utils.InitDatabase(store.DBPath, store.SqlFilesPathPrefix+"schema.sql")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
+	store.DB = db
+	defer store.DB.Close()
 
-	seedSchema, err := os.ReadFile("./cmd/sql/seed.sql")
+	seedSchema, err := os.ReadFile(store.SqlFilesPathPrefix + "seed.sql")
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = utils.ExecSQL(db, seedSchema)
+	_, err = utils.ExecSQL(db, seedSchema)
 	if err != nil {
 		log.Println(err)
+	} else {
+		log.Println("Seeding database finished...")
 	}
 
 	http.HandleFunc("/health", httpapi.HealthHandler)
+
 	http.HandleFunc("/debug/reset", debug.ResetPartsHandler)
+	http.HandleFunc("/debug/stats", debug.PartsStatsHandler)
 
 	log.Println("Server running on :" + port)
 	err = http.ListenAndServe(":"+port, nil)

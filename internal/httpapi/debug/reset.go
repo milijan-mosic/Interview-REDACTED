@@ -14,11 +14,10 @@ func ResetPartsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sqlFilesPathPrefix := "./cmd/sql/"
 	sqlFiles := []string{"clean_db.sql", "schema.sql", "seed.sql"}
 
 	for _, file := range sqlFiles {
-		schema, err := os.ReadFile(sqlFilesPathPrefix + file)
+		schema, err := os.ReadFile(store.SqlFilesPathPrefix + file)
 		if err != nil {
 			log.Println(err)
 			utils.SetJSONResponse(w, http.StatusInternalServerError, err.Error())

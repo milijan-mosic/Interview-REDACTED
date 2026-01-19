@@ -2,12 +2,13 @@ package utils
 
 import (
 	"database/sql"
+	"log"
 	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func ExecSQL(db *sql.DB, schema []byte) (any, error) {
+func ExecSQL(db *sql.DB, schema []byte) (sql.Result, error) {
 	if result, err := db.Exec(string(schema)); err != nil {
 		return result, err
 	}
@@ -28,6 +29,10 @@ func InitDatabase(dbPath string, schemaPath string) (*sql.DB, error) {
 
 	if _, err := db.Exec(string(schema)); err != nil {
 		return nil, err
+	}
+
+	if err := db.Ping(); err != nil {
+		log.Fatal("Failed to ping DB:", err)
 	}
 
 	return db, nil

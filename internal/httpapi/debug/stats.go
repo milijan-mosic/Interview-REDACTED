@@ -1,4 +1,4 @@
-package httpapi
+package debug
 
 import (
 	"interview/cmd/utils"

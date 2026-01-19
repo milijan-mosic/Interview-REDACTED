@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"interview/cmd/utils"
 	"interview/internal/httpapi"
+	"interview/internal/httpapi/debug"
 	"interview/internal/store"
 	"log"
 	"net/http"
@@ -29,6 +30,7 @@ func main() {
 	}
 
 	http.HandleFunc("/health", httpapi.HealthHandler)
+	http.HandleFunc("/debug/reset", debug.ResetPartsHandler)
 
 	log.Println("Server running on :" + port)
 	err = http.ListenAndServe(":"+port, nil)

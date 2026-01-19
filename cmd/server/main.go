@@ -5,6 +5,7 @@ import (
 	"interview/cmd/utils"
 	"interview/internal/httpapi"
 	"interview/internal/httpapi/debug"
+	"interview/internal/httpapi/parts"
 	"interview/internal/store"
 	"log"
 	"net/http"
@@ -36,6 +37,11 @@ func main() {
 
 	http.HandleFunc("/debug/reset", debug.ResetPartsHandler)
 	http.HandleFunc("/debug/stats", debug.PartsStatsHandler)
+
+	apiVersion := "/v1"
+	http.HandleFunc(apiVersion+"/parts", parts.ListPartsHandler)
+	http.HandleFunc(apiVersion+"/parts/{id}", parts.GetPartHandler)
+	http.HandleFunc(apiVersion+"/parts/{id}/status", parts.PatchPartHandler)
 
 	log.Println("Server running on :" + port)
 	err = http.ListenAndServe(":"+port, nil)

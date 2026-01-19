@@ -1,4 +1,4 @@
-package httpapi
+package parts
 
 import (
 	"interview/cmd/utils"
